@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Junqi Fu, Lydia Solodiuk, Yuheng Sun, Lingxiao Wang, Sixing Zhang" />
+
+
+<title>Content Analysis of Popular 27 Violent Games</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="st.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Content Analysis of Popular 27 Violent
+Games</h1>
+<h4 class="author">Junqi Fu, Lydia Solodiuk, Yuheng Sun, Lingxiao Wang,
+Sixing Zhang</h4>
+
+</div>
+
+
+<div
+id="a-simple-content-analysis-for-popular-real-world-based-violent-video-game"
+class="section level1">
+<h1>A simple content analysis for popular real-world based violent video
+game</h1>
+<p>A foundational question always lies in the cognitive explorations of
+media pscyhology: effects of violent media on users’ psychological and
+behavioral responses. This topic has been a subject of ongoing debate
+and study among researchers, particularly in light of emerging
+media.</p>
+<p>There’s been a shift in research focus to more dynamic multimedia
+experiences, such as violent video games. This shift recognizes the
+changing ways people, especially youth and young adults, consume
+entertainment.</p>
+<p>Situating its analysis within the violent gaming context, this study
+examines this central question: <strong>How do popular reality-based
+violent video games portray violent crimes?</strong></p>
+<div id="methodology" class="section level2">
+<h2>Methodology</h2>
+<p>To explore the central question, this study utilizes a content
+analysis study, specifically looking at the frequency of various violent
+crime elements and the demographic characteristics of the perpetrators
+in the violent behaviors.</p>
+<pre><code>##  [1] &quot;NameofVideoGame&quot;    &quot;Year&quot;               &quot;Platform&quot;          
+##  [4] &quot;ESRBratings&quot;        &quot;Genre&quot;              &quot;Feature&quot;           
+##  [7] &quot;NumberPerpetrators&quot; &quot;Age&quot;                &quot;Gender&quot;            
+## [10] &quot;Race&quot;               &quot;Class&quot;              &quot;Justified&quot;         
+## [13] &quot;Appearance&quot;         &quot;NumberVictims&quot;      &quot;Age2&quot;              
+## [16] &quot;Gender2&quot;            &quot;Race2&quot;              &quot;Fightback&quot;         
+## [19] &quot;Getarmed&quot;           &quot;Gun&quot;                &quot;OtherWeapons&quot;      
+## [22] &quot;Physical&quot;           &quot;AggressiveWords&quot;    &quot;Blood&quot;             
+## [25] &quot;Death&quot;              &quot;Frequency&quot;          &quot;Place&quot;             
+## [28] &quot;PropertyDestory&quot;</code></pre>
+<p>Here’s a brief description of <a
+href="https://docs.google.com/spreadsheets/d/1WBGu7SvLORHMFetUOUqOduQsGdetHePaD0NGUL3Ojdg/edit?usp=sharing">our
+codebook</a>!</p>
+<p><strong>Basic info about each game</strong></p>
+<ul>
+<li><strong>NameofVideoGame</strong>: game’s title</li>
+<li><strong>Year</strong>: release year</li>
+<li><strong>Platform</strong>: on which website the game is on the top
+list): 1 = Steam; 2 = IMDB; 3 = Gameranx; 4 = GOG; 5 = Epic; 6=
+Multiple</li>
+<li><strong>ESRBratings</strong>: ESRB ratings): 1 = Everyone; 2 =
+Everyone 10+; 3 = Teen; 4 = Mature 17+; 5 = Adults only 18+</li>
+<li><strong>Genre</strong>: game genre): 1 = Action; 2= Shooter; 3 =
+Fighting; 4 = Others (e.g., Racing); 5= Multiple</li>
+<li><strong>Feature</strong>: gameplay feature:) 1 = single player; 2 =
+multi player; 3 = both</li>
+</ul>
+<p><strong>Perpetrator features</strong></p>
+<ul>
+<li><strong>NumberPerpetrators</strong>: number of perpetrators
+gameplay): 1 = 1; 2 = 2~5; 3 = 6~25; 4 = 25+</li>
+<li><strong>Age</strong>: perpetrator age): 1 = young (1~19); 2 = young
+adult (20~29); 3 = adult (30~50); 4 = old (50+); 5= multiple</li>
+<li><strong>Gender</strong>: perpetrator gender):1 = Male; 2 = Female; 3
+= Both Female and Male</li>
+<li><strong>Race</strong>: perpetrator race/ethnicity: 1= White; 2 =
+Black; 3 = Hispanic/Latino; 4 = Asian;5 = Multiple</li>
+<li><strong>Class</strong>: 1 = lower class; 2 = middle class; 3 = upper
+class</li>
+<li><strong>Justified</strong>: perpetrator motive for violence): 1 =
+justified by gameplay narrative; 0 = unjustified</li>
+<li><strong>Appearance</strong>: perpetrator appearance): 1 = taller and
+stronger than the victim; 2 = shorter and slimmer than the victim; 3 =
+similar body size to victim</li>
+</ul>
+<p><strong>Victim features</strong></p>
+<ul>
+<li><strong>NumberVictims</strong>: lease number of victims in the 30
+minute gameplay:) 1 = 1; 2 = 2~5; 3 = 6~25; 4 = 25+</li>
+<li><strong>Age2</strong>: victim age:) 1 = young (1~19); 2 = young
+adult (20~29); 3 = adult (30~50); 4 = old (50+); 5 = multiple</li>
+<li><strong>Gender2</strong>: victim gender:) 1 = Male; 2 = Female; 3 =
+Both Female and Male</li>
+<li><strong>Race2</strong>: victim race/ethnicity:) 1= White; 2 = Black;
+3 = Hispanic/Latino; 4 = Asian; 5 = multiple</li>
+<li><strong>Fightback</strong>: victim fights back:) 1 = yes; 0 =
+no</li>
+<li><strong>Getarmed</strong>: victim gets armed:) 1 = yes; 0 = no</li>
+</ul>
+<p><strong>Violence features</strong></p>
+<ul>
+<li><strong>Gun</strong>: violent behaviors involving gun): 1 = yes; 0 =
+no</li>
+<li><strong>OtherWeapons</strong>: violent behaviors involving other
+weapons (hammer, knife, etc.): 1 = yes; 0 = no</li>
+<li><strong>Physical</strong>: violent behaviors involving physical
+conflicts (punch, fight, crash, etc.): 1 = yes; 0 = no</li>
+<li><strong>AggressiveWords</strong>: violent behaviors involving
+aggressive words): 1 = yes; 0 = no</li>
+<li><strong>Blood</strong>: violent behaviors involving blood, no
+death): 1 = yes; 0 = no</li>
+<li><strong>Death</strong>: violent behaviors involving death): 1 = yes;
+0 = no</li>
+<li><strong>Frequency</strong>: frequency of violence: 1 = rarely; 2 =
+often; 3 = always</li>
+<li><strong>Place</strong>: place of happening): 1 = urban; 2 = rural; 3
+= both</li>
+<li><strong>PropertyDestory</strong>: violent acts destroying property):
+0 = rarely; 1 = often</li>
+</ul>
+</div>
+<div id="samples" class="section level2">
+<h2>Samples</h2>
+<div id="u.s.-real-world-base-violence-video-game"
+class="section level3">
+<h3>U.S. real-world base violence video game</h3>
+<p>This study only focus only violence video game with a American
+real-world based setting as scenarios of in-game narratives, including
+games that feature crime elements (e.g., gun use and violence
+justification) that are more frequently present in the context of
+real-world crime scenarios. These games are more likely to mirror
+certain aspects of real-world criminality happened in the United
+States.</p>
+</div>
+<div id="sample-collection" class="section level3">
+<h3>Sample collection</h3>
+<p>A sample of 24 popular crime games was selected. This selection was
+made by referring to top-selling games on major platforms, with a
+particular focus on Steam due to its popularity and large user base.
+Additionally, we consulted popular entertainment media that rank top
+games (e.g., IMDB and Gameranx) to refine their selections.</p>
+</div>
+</div>
+<div id="basic-descriptive-anlaysis" class="section level2">
+<h2>Basic descriptive anlaysis</h2>
+<pre class="r"><code>summary(game)</code></pre>
+<pre><code>##  NameofVideoGame         Year         Platform      ESRBratings        Genre  
+##  Length:27          Min.   :2000   Min.   :1.000   Min.   :2.000   Min.   :1  
+##  Class :character   1st Qu.:2005   1st Qu.:1.000   1st Qu.:4.000   1st Qu.:1  
+##  Mode  :character   Median :2008   Median :2.000   Median :4.000   Median :1  
+##                     Mean   :2009   Mean   :3.148   Mean   :3.852   Mean   :2  
+##                     3rd Qu.:2013   3rd Qu.:6.000   3rd Qu.:4.000   3rd Qu.:2  
+##                     Max.   :2022   Max.   :6.000   Max.   :4.000   Max.   :5  
+##                                                                               
+##     Feature      NumberPerpetrators      Age            Gender     
+##  Min.   :1.000   Min.   :1.000      Min.   :2.000   Min.   :1.000  
+##  1st Qu.:1.000   1st Qu.:1.000      1st Qu.:3.000   1st Qu.:1.000  
+##  Median :1.000   Median :1.000      Median :3.000   Median :1.000  
+##  Mean   :1.481   Mean   :1.481      Mean   :3.333   Mean   :1.417  
+##  3rd Qu.:1.500   3rd Qu.:2.000      3rd Qu.:4.000   3rd Qu.:1.250  
+##  Max.   :3.000   Max.   :3.000      Max.   :5.000   Max.   :3.000  
+##                                                     NA&#39;s   :3      
+##       Race           Class         Justified        Appearance  
+##  Min.   :1.000   Min.   :1.000   Min.   :0.0000   Min.   :1.00  
+##  1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.0000   1st Qu.:1.00  
+##  Median :2.000   Median :1.000   Median :1.0000   Median :3.00  
+##  Mean   :2.667   Mean   :1.619   Mean   :0.7692   Mean   :2.25  
+##  3rd Qu.:5.000   3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.:3.00  
+##  Max.   :5.000   Max.   :3.000   Max.   :1.0000   Max.   :3.00  
+##                  NA&#39;s   :6       NA&#39;s   :1        NA&#39;s   :3     
+##  NumberVictims        Age2          Gender2         Race2     Fightback     
+##  Min.   :1.000   Min.   :2.000   Min.   :1.00   Min.   :1   Min.   :0.0000  
+##  1st Qu.:2.500   1st Qu.:3.000   1st Qu.:1.00   1st Qu.:1   1st Qu.:1.0000  
+##  Median :4.000   Median :4.000   Median :1.00   Median :2   Median :1.0000  
+##  Mean   :3.148   Mean   :3.963   Mean   :1.68   Mean   :3   Mean   :0.8333  
+##  3rd Qu.:4.000   3rd Qu.:5.000   3rd Qu.:2.00   3rd Qu.:5   3rd Qu.:1.0000  
+##  Max.   :4.000   Max.   :5.000   Max.   :3.00   Max.   :5   Max.   :1.0000  
+##                                  NA&#39;s   :2                  NA&#39;s   :3       
+##     Getarmed           Gun        OtherWeapons       Physical     
+##  Min.   :0.0000   Min.   :0.00   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.:1.0000   1st Qu.:1.00   1st Qu.:0.0000   1st Qu.:0.0000  
+##  Median :1.0000   Median :1.00   Median :1.0000   Median :1.0000  
+##  Mean   :0.8148   Mean   :0.88   Mean   :0.6538   Mean   :0.6296  
+##  3rd Qu.:1.0000   3rd Qu.:1.00   3rd Qu.:1.0000   3rd Qu.:1.0000  
+##  Max.   :1.0000   Max.   :1.00   Max.   :1.0000   Max.   :1.0000  
+##                   NA&#39;s   :2      NA&#39;s   :1                        
+##  AggressiveWords      Blood            Death          Frequency    
+##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :1.000  
+##  1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:1.0000   1st Qu.:2.000  
+##  Median :0.0000   Median :1.0000   Median :1.0000   Median :3.000  
+##  Mean   :0.4615   Mean   :0.5385   Mean   :0.8077   Mean   :2.519  
+##  3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:3.000  
+##  Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :3.000  
+##  NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :1                       
+##      Place       PropertyDestory 
+##  Min.   :1.000   Min.   :0.0000  
+##  1st Qu.:1.000   1st Qu.:0.0000  
+##  Median :1.000   Median :1.0000  
+##  Mean   :1.259   Mean   :0.5556  
+##  3rd Qu.:1.000   3rd Qu.:1.0000  
+##  Max.   :3.000   Max.   :1.0000  
+## </code></pre>
+<div id="summary-from-descriptive-statistics" class="section level3">
+<h3>Summary from descriptive statistics</h3>
+<div id="game-characteristics" class="section level4">
+<h4>Game characteristics</h4>
+<ul>
+<li><strong>Genres</strong>: action and shooter seems the most common
+genres</li>
+<li><strong>Gameplay</strong>: our sample consists primarily
+single-player games</li>
+</ul>
+</div>
+<div id="perpetrator-features" class="section level4">
+<h4>Perpetrator features</h4>
+<ul>
+<li><strong>Number &amp; age</strong>: most games feature a single
+perpetrator in the adult age.</li>
+<li><strong>Gender &amp; race</strong>: predominantly male perpetrators,
+with a racial distribution leaning towards White and black
+characters.</li>
+<li><strong>Social Class &amp; Justification</strong>: most perpetrators
+are from lower or middle class, and their actions are often justified by
+the gameplay narrative.</li>
+<li><strong>Appearance</strong>: perpetrators often have a similar or
+larger body size compared to their victims.</li>
+</ul>
+</div>
+<div id="victim-features" class="section level4">
+<h4>Victim features</h4>
+<ul>
+<li><strong>Age</strong>: victim’s age range widelly with a median at 4,
+indicating adult to old age.</li>
+<li><strong>Gender &amp; race</strong>: victims are predominantly male
+and the race distribution is varied.</li>
+<li><strong>Response to violence</strong>: victims often fight back and
+are likely to get armed.</li>
+</ul>
+</div>
+<div id="violence-features" class="section level4">
+<h4>Violence features</h4>
+<ul>
+<li><strong>Type of violence</strong>: uses of guns and physical
+violence are common, with other weapons and agreesive words being less
+frequent.</li>
+<li><strong>Blood &amp; death</strong>: there’s a high likelihood of
+death and a moderate presence of blood in these games.</li>
+<li><strong>Frequency &amp; location</strong>: violence is frequent, and
+predominantly occurs in urban setting.</li>
+</ul>
+</div>
+<div id="conclusion" class="section level4">
+<h4>Conclusion</h4>
+<p>Our sample tends to feature single male perpetrators, often justified
+in their actions, engaging in frequent and severe forms of violence,
+primarily against male victims in urban settings.</p>
+</div>
+</div>
+</div>
+<div
+id="h1-violent-video-games-overstate-the-prevalence-of-violent-crimes"
+class="section level2">
+<h2>H1: Violent video games overstate the prevalence of violent
+crimes</h2>
+<p>According to <a href="https://cde.ucr.cjis.gov/">2011-2021 FBI
+data</a>, in terms of types of weapon involved by offense, about 47%
+were different types of guns; and 36% of offenses involved knives or
+other cutting instruments. Additionally, in real-world crime, about 23%
+offenders are more likely to destroy property while committing
+crimes.</p>
+<div
+id="whether-vioelnt-video-game-overstate-the-prevalence-of-violent-crimes-in-terms-of-1-property-destroy-2-use-of-guns-3-use-of-other-weapons"
+class="section level3">
+<h3>Whether vioelnt video game overstate the prevalence of violent
+crimes in terms of 1) property destroy; 2) use of guns; 3) use of other
+weapons</h3>
+<div id="property-destroy" class="section level4">
+<h4>1) Property destroy</h4>
+<pre class="r"><code>t.test(game$PropertyDestory,mu=0.23,alternative=&quot;greater&quot;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  game$PropertyDestory
+## t = 3.3407, df = 26, p-value = 0.001268
+## alternative hypothesis: true mean is greater than 0.23
+## 95 percent confidence interval:
+##  0.3893416       Inf
+## sample estimates:
+## mean of x 
+## 0.5555556</code></pre>
+</div>
+<div id="use-of-guns" class="section level4">
+<h4>2) Use of guns</h4>
+<pre class="r"><code>t.test(game$Gun,mu=0.47,alternative=&quot;greater&quot;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  game$Gun
+## t = 6.181, df = 24, p-value = 1.094e-06
+## alternative hypothesis: true mean is greater than 0.47
+## 95 percent confidence interval:
+##  0.7665129       Inf
+## sample estimates:
+## mean of x 
+##      0.88</code></pre>
+</div>
+<div id="use-of-other-weapons" class="section level4">
+<h4>3) Use of other weapons</h4>
+<pre class="r"><code>t.test(game$OtherWeapons,mu=0.36,alternative=&quot;greater&quot;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  game$OtherWeapons
+## t = 3.0883, df = 25, p-value = 0.00244
+## alternative hypothesis: true mean is greater than 0.36
+## 95 percent confidence interval:
+##  0.491319      Inf
+## sample estimates:
+## mean of x 
+## 0.6538462</code></pre>
+<pre class="r"><code>fig &lt;- plot_ly(x = categories, y = vg_data, type = &#39;bar&#39;, name = &#39;Video Games Data&#39;, marker = list(color = &#39;red&#39;)) %&gt;%
+  add_trace(y = fbi_data, name = &#39;FBI Data&#39;, marker = list(color = &#39;yellow&#39;)) %&gt;%
+  layout(barmode = &#39;group&#39;, title = &#39;Violent video games(VVG) vs. FBI violent crime data&#39;)
+fig</code></pre>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2479b40836fc5c2de57c" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-2479b40836fc5c2de57c">{"x":{"visdat":{"32d42a67e0f3":["function () ","plotlyVisDat"]},"cur_data":"32d42a67e0f3","attrs":{"32d42a67e0f3":{"x":["Violent acts destroying property","Violent behaviors involving other weapons","Violent behaviors involving guns"],"y":[0.55555555555555558,0.65384615384615385,0.88],"marker":{"color":"red"},"name":"Video Games Data","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"},"32d42a67e0f3.1":{"x":["Violent acts destroying property","Violent behaviors involving other weapons","Violent behaviors involving guns"],"y":[0.23000000000000001,0.35999999999999999,0.46999999999999997],"marker":{"color":"yellow"},"name":"FBI Data","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"barmode":"group","title":"Violent video games(VVG) vs. FBI violent crime data","xaxis":{"domain":[0,1],"automargin":true,"title":[],"type":"category","categoryorder":"array","categoryarray":["Violent acts destroying property","Violent behaviors involving guns","Violent behaviors involving other weapons"]},"yaxis":{"domain":[0,1],"automargin":true,"title":[]},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Violent acts destroying property","Violent behaviors involving other weapons","Violent behaviors involving guns"],"y":[0.55555555555555558,0.65384615384615385,0.88],"marker":{"color":"red","line":{"color":"rgba(31,119,180,1)"}},"name":"Video Games Data","type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Violent acts destroying property","Violent behaviors involving other weapons","Violent behaviors involving guns"],"y":[0.23000000000000001,0.35999999999999999,0.46999999999999997],"marker":{"color":"yellow","line":{"color":"rgba(255,127,14,1)"}},"name":"FBI Data","type":"bar","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="conclusion-1" class="section level3">
+<h3>Conclusion</h3>
+<p>In terms of all three variables, our results are statistically
+significant with very low p-values, indicating strong evidence against
+the null hypothesis (that video games do not overstate the prevalence of
+these forms of violence). Consequently, we can conclude that violent
+video games in our sample do indeed overstate the prevalence of violent
+crimes in terms of property destruction, the use of guns, and the use of
+other weapons, when compared to the real-world crime data provided by
+the FBI, given a 0.95 confidence level.</p>
+</div>
+</div>
+<div
+id="h2-perpetuating-racialethnic-stereotypes-violent-video-games-overrepresent-non-white-male-as-perpetrators"
+class="section level2">
+<h2>H2: Perpetuating racial/ethnic stereotypes, violent video games
+overrepresent non-white male as perpetrators</h2>
+<pre class="r"><code>game2&lt;-game
+game2$Race&lt;-as.factor(game$Race)
+game2$Gender &lt;- as.factor(game$Gender)
+male &lt;- subset(game2, Gender != 2)
+chisq_test &lt;- chisq.test(table(male$Race))
+print(chisq_test)</code></pre>
+<pre><code>## 
+##  Chi-squared test for given probabilities
+## 
+## data:  table(male$Race)
+## X-squared = 6, df = 3, p-value = 0.1116</code></pre>
+<div id="conclusion-2" class="section level3">
+<h3>Conclusion</h3>
+<p>Evidence in our sample is not strong enough to conclude there is a
+significant association between race representation and male
+perpetrators. However, given we only analyze games with specific context
+related to United States’ real world happening and the relatively small
+sample size, this results could be potentially influenced.</p>
+</div>
+</div>
+<div id="h3-5" class="section level2">
+<h2>H3-5</h2>
+<div
+id="h3when-victims-fight-backget-armed-the-violent-behaviors-a-are-more-likely-to-be-justified-b-are-more-frequent"
+class="section level3">
+<h3>H3:When victims fight back/get armed, the violent behaviors a) are
+more likely to be justified, b) are more frequent</h3>
+</div>
+<div
+id="h4-stronger-perpetuators-are-less-likely-to-use-gun-to-perform-violence."
+class="section level3">
+<h3>H4: Stronger perpetuators are less likely to use gun to perform
+violence.</h3>
+</div>
+<div
+id="h5-richer-perpetrators-are-more-likely-to-use-gun-to-perform-violence"
+class="section level3">
+<h3>H5: Richer perpetrators are more likely to use gun to perform
+violence</h3>
+<pre class="r"><code>reg_1&lt;-lm(Justified~Fightback+Getarmed+Appearance+Class,data=game)
+reg_2&lt;-lm(Frequency~Gun+OtherWeapons+Physical+Appearance+Class,data=game)
+reg_3&lt;-lm(Gun~Class+Appearance,data=game)
+reg_4&lt;-lm(Physical~Class+Appearance,data=game)
+stargazer(reg_1,reg_2,reg_3,reg_4,type=&quot;text&quot;)</code></pre>
+<pre><code>## 
+## ================================================================================================
+##                                                 Dependent variable:                             
+##                     ----------------------------------------------------------------------------
+##                         Justified           Frequency             Gun              Physical     
+##                            (1)                 (2)                (3)                (4)        
+## ------------------------------------------------------------------------------------------------
+## Fightback                 0.166                                                                 
+##                          (0.235)                                                                
+##                                                                                                 
+## Getarmed                  0.018                                                                 
+##                          (0.208)                                                                
+##                                                                                                 
+## Gun                                           0.913                                             
+##                                              (0.547)                                            
+##                                                                                                 
+## OtherWeapons                                 -0.214                                             
+##                                              (0.265)                                            
+##                                                                                                 
+## Physical                                      0.444                                             
+##                                              (0.266)                                            
+##                                                                                                 
+## Appearance                -0.002             -0.106              -0.039             -0.096      
+##                          (0.076)             (0.119)            (0.049)            (0.110)      
+##                                                                                                 
+## Class                     0.104             -0.444**             0.053              0.023       
+##                          (0.096)             (0.153)            (0.067)            (0.151)      
+##                                                                                                 
+## Constant                 0.593**            2.531***            0.950***           0.836**      
+##                          (0.252)             (0.734)            (0.163)            (0.365)      
+##                                                                                                 
+## ------------------------------------------------------------------------------------------------
+## Observations                21                 21                  21                 21        
+## R2                        0.133               0.470              0.070              0.043       
+## Adjusted R2               -0.084              0.293              -0.033             -0.063      
+## Residual Std. Error  0.313 (df = 16)     0.496 (df = 15)    0.222 (df = 18)    0.498 (df = 18)  
+## F Statistic         0.613 (df = 4; 16) 2.660* (df = 5; 15) 0.680 (df = 2; 18) 0.403 (df = 2; 18)
+## ================================================================================================
+## Note:                                                                *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+<div id="findings" class="section level4">
+<h4>Findings</h4>
+<ul>
+<li><strong>H4</strong>: the coefficients for the physical appearance of
+the perpetrator are negative for the use of a gun, suggesting that
+stronger-looking perpetrators are slightly less likely to use guns in
+violence.</li>
+<li><strong>H5</strong>: Richer perpetrators are slightly more likely to
+use gun to perform violence.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="correlation-between-portrayls-of-violence-features"
+class="section level2">
+<h2>Correlation between portrayls of violence features</h2>
+<pre class="r"><code>violent_features &lt;- game_clean[, c(&quot;Gun&quot;, &quot;OtherWeapons&quot;, &quot;Physical&quot;, &quot;AggressiveWords&quot;, &quot;Blood&quot;, &quot;Death&quot;, &quot;Frequency&quot;, &quot;PropertyDestory&quot;)]
+numeric_data &lt;- violent_features[, colSums(is.na(violent_features)) &lt; nrow(violent_features)]
+numeric_data &lt;- violent_features[, sapply(violent_features, function(x) var(x, na.rm = TRUE) &gt; 0)]
+cor_matrix &lt;- cor(violent_features, use = &quot;pairwise.complete.obs&quot;, method = &quot;pearson&quot;)
+corrplot(cor_matrix, method = &quot;color&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div id="findings-1" class="section level3">
+<h3>Findings</h3>
+<ul>
+<li><strong>Use of weapons</strong>: there is a moderately negative
+correlation, suggesting that in scenarios where guns are used, other
+weapons are less likely to be featured, and vice versa.</li>
+<li><strong>Depiction of bloody scenarios</strong>: blood is negatively
+correlated with the use of guns but positively correlated with physical
+violence, suggesting that blood is more frequently depicted in physical
+altercations than in shootings.</li>
+<li><strong>Protrayl of death</strong>: death has a strong positive
+correlation with the use of guns, which may indicate that gun violence
+in these games often results in death.</li>
+<li><strong>Property Desturction &amp; weapon</strong>: Property
+destruction shows a moderate negative correlation with gun use,
+suggesting that games with gun violence may feature less property
+destruction.</li>
+</ul>
+</div>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
+<p>This content analysis study illuminated several patterns in the
+portrayal of violence, perpetrators, and victims. This study has
+substantiated that the frequency and justification of violence within
+these games tend to be heightened compared to real-world data. Games in
+the sample have a tendency to feature violence that is more often
+justified within the narrative, with frequent use of guns and
+significant instances of death, which exceeds the prevalence observed in
+FBI crime statistics. This over-representation could have implications
+for perceptions of violence and criminal behavior among players,
+particularly considering the popularity of such games among youth and
+young adults.</p>
+<p>This study also delved into racial, ethnic, and gender
+representations of perpetrators and victims, seeking correlations that
+might suggest stereotyping. While the results did not conclusively
+support the hypothesis that violent video games overrepresent non-white
+males as perpetrators, it did highlight the dominance of male characters
+in these roles, with a tendency towards certain races. The nuanced
+portrayals of violence, where stronger perpetrators are slightly less
+likely to use guns and richer perpetrators more so, offer a complex
+picture of how violence is depicted in gaming narratives. our analysis
+contributes to the broader discourse on the impact of media on social
+perceptions and user psychology, emphasizing the role that content
+creators play in either challenging or reinforcing existing societal
+narratives.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

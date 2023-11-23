@@ -1,0 +1,246 @@
+
+---
+title: "Content Analysis of Popular 27 Violent Games"
+output: html_document
+author: Junqi Fu, Lydia Solodiuk, Yuheng Sun, Lingxiao Wang, Sixing Zhang
+---
+```{r, echo=FALSE, message=FALSE}
+library(corrplot)
+library(xtable)
+library(rio)
+library(car)
+library(ggplot2)
+library(plotly)
+library(stargazer)
+```
+
+# A simple content analysis for popular real-world based violent video game
+
+A foundational question always lies in the cognitive explorations of media pscyhology: effects of violent media on users' psychological and behavioral responses. This topic has been a subject of ongoing debate and study among researchers, particularly in light of emerging media.
+
+There's been a shift in research focus to more dynamic multimedia experiences, such as violent video games. This shift recognizes the changing ways people, especially youth and young adults, consume entertainment. 
+
+Situating its analysis within the violent gaming context, this study examines this central question: **How do popular reality-based violent video games portray violent crimes?**
+
+## Methodology
+
+To explore the central question, this study utilizes a content analysis study, specifically looking at the frequency of various violent crime elements and the demographic characteristics of the perpetrators in the violent behaviors.
+```{r echo=FALSE}
+game<-import("Violent Gaming Analysis .sav")
+game$Nameofthecharacters<-NULL
+game<-game[-28:-30,]
+game$CoderInitials<-NULL
+game[14,4]<-4
+game$Justified<-recode(game$Justified,"1=1;2=0")
+game$Fightback<-recode(game$Fightback,"1=1;2=0")
+game$Getarmed<-recode(game$Getarmed,"1=1;2=0")
+game$Gun<-recode(game$Gun,"1-1;2=0")
+game$OtherWeapons<-recode(game$OtherWeapons,"1=1;2=0")
+game$Physical<-recode(game$Physical,"1=1;2=0")
+game$AggressiveWords<-recode(game$AggressiveWords,"1=1;2=0")
+game$Blood<-recode(game$Blood,"1=1;2=0")
+game$Death<-recode(game$Death,"1=1;2=0")
+game$Platform<-recode(game$Platform,"1=1;2=2;3=3;4=4;5=5;else=6")
+game$Genre<-recode(game$Genre,"1=1;2=2;3=3;4=4;else=5")
+game$Feature<-recode(game$Feature,"1=1;2=2;else=3")
+game$Age<-recode(game$Age,"1=1;2=2;3=3;4=4;else=5")
+game$Race<-recode(game$Race,"1=1;2=2;3=3;4=4;else=5")
+game$Age2<-recode(game$Age2,"1=1;2=2;3=3;4=4;else=5")
+game$Gender2<-round(game$Gender2)
+game$Race2<-recode(game$Race2,"1=1;2=2;3=3;4=4;else=5")
+game$Getarmed<-recode(game$Getarmed,"0=0;else=1")
+game$Place<-recode(game$Place,"1=1;2=2;else=3")
+game$PropertyDestory<-recode(game$PropertyDestory, "1=0;else=1")
+variable_names=names(game)
+print(variable_names)
+```
+
+Here's a brief description of [our codebook](https://docs.google.com/spreadsheets/d/1WBGu7SvLORHMFetUOUqOduQsGdetHePaD0NGUL3Ojdg/edit?usp=sharing)!
+
+**Basic info about each game**
+
+- **NameofVideoGame**: game's title
+- **Year**: release year
+- **Platform**: on which website the game is on the top list): 1 = Steam; 2 = IMDB; 3 = Gameranx; 4 = GOG; 5 = Epic; 6= Multiple
+- **ESRBratings**: ESRB ratings): 1 = Everyone; 2 = Everyone 10+; 3 = Teen; 4 = Mature 17+; 5 = Adults only 18+
+- **Genre**: game genre): 1 = Action; 2= Shooter; 3 = Fighting; 4 = Others (e.g., Racing); 5= Multiple
+- **Feature**: gameplay feature:) 1 = single player; 2 = multi player; 3 = both
+
+**Perpetrator features**
+
+- **NumberPerpetrators**: number of perpetrators gameplay): 1 = 1; 2 = 2~5; 3 = 6~25; 4 = 25+
+- **Age**: perpetrator age): 1 = young (1~19); 2 = young adult (20~29); 3 = adult (30~50); 4 = old (50+); 5= multiple
+- **Gender**: perpetrator gender):1 = Male; 2 = Female; 3 = Both Female and Male
+- **Race**: perpetrator race/ethnicity: 1= White; 2 = Black; 3 = Hispanic/Latino; 4 = Asian;5 = Multiple
+- **Class**: 1 = lower class; 2 = middle class; 3 = upper class
+- **Justified**: perpetrator motive for violence): 1 = justified by gameplay narrative; 0 = unjustified
+- **Appearance**: perpetrator appearance): 1 = taller and stronger than the victim; 2 = shorter and slimmer than the victim; 3 = similar body size to victim
+
+**Victim features**
+
+- **NumberVictims**: lease number of victims in the 30 minute gameplay:) 1 = 1; 2 = 2~5; 3 = 6~25; 4 = 25+
+- **Age2**: victim age:) 1 = young (1~19); 2 = young adult (20~29); 3 = adult (30~50); 4 = old (50+); 5 = multiple
+- **Gender2**: victim gender:) 1 = Male; 2 = Female; 3 = Both Female and Male
+- **Race2**: victim race/ethnicity:) 1= White; 2 = Black; 3 = Hispanic/Latino; 4 = Asian; 5 = multiple
+- **Fightback**: victim fights back:) 1 = yes; 0 = no
+- **Getarmed**: victim gets armed:) 1 = yes; 0 = no
+
+**Violence features**
+
+- **Gun**: violent behaviors involving gun): 1 = yes; 0 = no
+- **OtherWeapons**: violent behaviors involving other weapons (hammer, knife, etc.): 1 = yes; 0 = no
+- **Physical**: violent behaviors involving physical conflicts (punch, fight, crash, etc.): 1 = yes; 0 = no
+- **AggressiveWords**: violent behaviors involving aggressive words): 1 = yes; 0 = no
+- **Blood**: violent behaviors involving blood, no death): 1 = yes; 0 = no
+- **Death**: violent behaviors involving death): 1 = yes; 0 = no
+- **Frequency**: frequency of violence: 1 = rarely; 2 = often; 3 = always
+- **Place**: place of happening): 1 = urban; 2 = rural; 3 = both
+- **PropertyDestory**: violent acts destroying property): 0 = rarely; 1 = often
+
+
+## Samples
+
+### U.S. real-world base violence video game
+This study only focus only violence video game with a American real-world based setting as scenarios of in-game narratives, including games that feature crime elements (e.g., gun use and violence justification) that are more frequently present in the context of real-world crime scenarios. These games are more likely to  mirror certain aspects of real-world criminality happened in the United States. 
+
+### Sample collection
+A sample of 24 popular crime games was selected. This selection was made by referring to top-selling games on major platforms, with a particular focus on Steam due to its popularity and large user base. Additionally, we consulted popular entertainment media that rank top games (e.g., IMDB and Gameranx) to refine their selections.
+
+## Basic descriptive anlaysis
+```{r}
+summary(game)
+```
+
+### Summary from descriptive statistics
+
+#### Game characteristics
+
+- **Genres**: action and shooter seems the most common genres
+- **Gameplay**: our sample consists primarily single-player games
+
+#### Perpetrator features
+
+- **Number & age**: most games feature a single perpetrator in the adult age.
+- **Gender & race**: predominantly male perpetrators, with a racial distribution leaning towards White and black characters.
+- **Social Class & Justification**: most perpetrators are from lower or middle class, and their actions are often justified by the gameplay narrative.
+- **Appearance**: perpetrators often have a similar or larger body size compared to their victims.
+
+#### Victim features
+
+- **Age**: victim's age range widelly with a median at 4, indicating adult to old age.
+- **Gender & race**: victims are predominantly male and the race distribution is varied.
+- **Response to violence**: victims often fight back and are likely to get armed.
+
+#### Violence features
+
+- **Type of violence**: uses of guns and physical violence are common, with other weapons and agreesive words being less frequent.
+- **Blood & death**: there's a high likelihood of death and a moderate presence of blood in these games.
+- **Frequency & location**: violence is frequent, and predominantly occurs in urban setting.
+
+#### Conclusion
+
+Our sample tends to feature single male perpetrators, often justified in their actions, engaging in frequent and severe forms of violence, primarily against male victims in urban settings.
+
+
+
+## H1: Violent video games overstate the prevalence of violent crimes
+
+According to [2011-2021 FBI data](https://cde.ucr.cjis.gov/), in terms of types of weapon involved by offense,
+about 47% were different types of guns; and 36% of offenses involved knives or other cutting instruments. Additionally, in real-world crime, about 23% offenders are more likely to destroy property while committing crimes.
+
+### Whether vioelnt video game overstate the prevalence of violent crimes in terms of 1) property destroy; 2) use of guns; 3) use of other weapons
+
+#### 1) Property destroy
+
+```{r}
+t.test(game$PropertyDestory,mu=0.23,alternative="greater")
+```
+
+#### 2) Use of guns
+```{r}
+t.test(game$Gun,mu=0.47,alternative="greater")
+```
+
+#### 3) Use of other weapons
+```{r}
+t.test(game$OtherWeapons,mu=0.36,alternative="greater")
+```
+
+```{r echo=FALSE}
+vg_data <- c(mean(game$PropertyDestory), mean(game$OtherWeapons, na.rm = TRUE),mean(game$Gun, na.rm = TRUE))
+fbi_data <- c(0.23, 0.36, 0.47)
+categories <- c('Violent acts destroying property', 'Violent behaviors involving other weapons', 'Violent behaviors involving guns')
+```
+```{r}
+fig <- plot_ly(x = categories, y = vg_data, type = 'bar', name = 'Video Games Data', marker = list(color = 'red')) %>%
+  add_trace(y = fbi_data, name = 'FBI Data', marker = list(color = 'yellow')) %>%
+  layout(barmode = 'group', title = 'Violent video games(VVG) vs. FBI violent crime data')
+fig
+```
+
+### Conclusion
+
+In terms of all three variables, our results are statistically significant with very low p-values, indicating strong evidence against the null hypothesis (that video games do not overstate the prevalence of these forms of violence). Consequently, we can conclude that violent video games in our sample do indeed overstate the prevalence of violent crimes in terms of property destruction, the use of guns, and the use of other weapons, when compared to the real-world crime data provided by the FBI, given a 0.95 confidence level.
+
+## H2: Perpetuating racial/ethnic stereotypes, violent video games overrepresent non-white male as perpetrators
+```{r}
+game2<-game
+game2$Race<-as.factor(game$Race)
+game2$Gender <- as.factor(game$Gender)
+male <- subset(game2, Gender != 2)
+chisq_test <- chisq.test(table(male$Race))
+print(chisq_test)
+```
+
+### Conclusion
+
+Evidence in our sample is not strong enough to conclude there is a significant association between race representation and  male perpetrators. However, given we only analyze games with specific context related to United States' real world happening and the relatively small sample size, this results could be potentially influenced.
+
+## H3-5
+
+### H3:When victims fight back/get armed, the violent behaviors a) are more likely to be justified, b) are more frequent
+
+### H4: Stronger perpetuators are less likely to use gun to perform violence. 
+
+### H5: Richer perpetrators are more likely to use gun to perform violence
+
+```{r}
+reg_1<-lm(Justified~Fightback+Getarmed+Appearance+Class,data=game)
+reg_2<-lm(Frequency~Gun+OtherWeapons+Physical+Appearance+Class,data=game)
+reg_3<-lm(Gun~Class+Appearance,data=game)
+reg_4<-lm(Physical~Class+Appearance,data=game)
+stargazer(reg_1,reg_2,reg_3,reg_4,type="text")
+
+```
+
+#### Findings
+- **H4**: the coefficients for the physical appearance of the perpetrator are negative for the use of a gun, suggesting that stronger-looking perpetrators are slightly less likely to use guns in violence.
+- **H5**: Richer perpetrators are slightly more likely to use gun to perform violence.
+
+## Correlation between portrayls of violence features
+
+```{r echo=FALSE}
+data<-import("violent game.csv")
+
+game_clean <- data[, sapply(data, is.numeric)]
+```
+```{r}
+violent_features <- game_clean[, c("Gun", "OtherWeapons", "Physical", "AggressiveWords", "Blood", "Death", "Frequency", "PropertyDestory")]
+numeric_data <- violent_features[, colSums(is.na(violent_features)) < nrow(violent_features)]
+numeric_data <- violent_features[, sapply(violent_features, function(x) var(x, na.rm = TRUE) > 0)]
+cor_matrix <- cor(violent_features, use = "pairwise.complete.obs", method = "pearson")
+corrplot(cor_matrix, method = "color")
+```
+
+### Findings
+- **Use of weapons**: there is a moderately negative correlation, suggesting that in scenarios where guns are used, other weapons are less likely to be featured, and vice versa.
+- **Depiction of bloody scenarios**: blood is negatively correlated with the use of guns but positively correlated with physical violence, suggesting that blood is more frequently depicted in physical altercations than in shootings.
+- **Protrayl of death**: death has a strong positive correlation with the use of guns, which may indicate that gun violence in these games often results in death.
+- **Property Desturction & weapon**: Property destruction shows a moderate negative correlation with gun use, suggesting that games with gun violence may feature less property destruction.
+
+## Conclusions
+
+This content analysis study illuminated several patterns in the portrayal of violence, perpetrators, and victims. This study has substantiated that the frequency and justification of violence within these games tend to be heightened compared to real-world data. Games in the sample have a tendency to feature violence that is more often justified within the narrative, with frequent use of guns and significant instances of death, which exceeds the prevalence observed in FBI crime statistics. This over-representation could have implications for perceptions of violence and criminal behavior among players, particularly considering the popularity of such games among youth and young adults.
+
+This study also delved into racial, ethnic, and gender representations of perpetrators and victims, seeking correlations that might suggest stereotyping. While the results did not conclusively support the hypothesis that violent video games overrepresent non-white males as perpetrators, it did highlight the dominance of male characters in these roles, with a tendency towards certain races. The nuanced portrayals of violence, where stronger perpetrators are slightly less likely to use guns and richer perpetrators more so, offer a complex picture of how violence is depicted in gaming narratives. our analysis contributes to the broader discourse on the impact of media on social perceptions and user psychology, emphasizing the role that content creators play in either challenging or reinforcing existing societal narratives.
+

@@ -1,0 +1,6 @@
+name: "Content Analysis of Popular 27 Violent Games"
+output:
+  html_document:
+    css: st.css
+    highlight: textmate
+    
